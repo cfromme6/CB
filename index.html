@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Cardinal Books - Wireframe</title>
+   <!-- Load Tailwind CSS -->
+   <script src="https://cdn.tailwindcss.com"></script>
+   <!-- Custom styling for smooth scrolling and font -->
+   <style>
+       @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+      
+       /* Define Custom Colors */
+       .bg-maroon { background-color: #800000; }
+       .text-maroon { color: #800000; }
+       .hover\:bg-maroon-dark:hover { background-color: #6a0000; }
+       .text-gold { color: #FFD700; }
+       .bg-gold { background-color: #FFD700; }
+
+
+       body {
+           font-family: 'Inter', sans-serif;
+           scroll-behavior: smooth;
+           background-color: #f7f7f7; /* Light Gray background */
+       }
+       .nav-link:hover {
+           color: #800000; /* Maroon on hover */
+       }
+       .card-link {
+           transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+           display: block; /* Make the whole div clickable */
+       }
+       .card-link:hover:not(.no-hover-effect) {
+           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+           transform: translateY(-3px);
+           cursor: pointer;
+       }
+   </style>
+</head>
+<body class="text-gray-800">
+
+
+   <!-- Header and Navigation -->
+   <header class="sticky top-0 z-50 bg-maroon shadow-lg">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div class="flex items-center justify-between h-20">
+               <!-- Logo/Title -->
+               <div class="flex-shrink-0">
+                   <a href="#" class="text-3xl font-extrabold text-white">Cardinal Books</a>
+               </div>
+              
+               <!-- Navigation Links (The "Corner" Links) -->
+               <nav class="flex space-x-6 items-center">
+                   <a href="#about-section" class="nav-link text-lg font-medium text-white transition duration-150 rounded-lg p-2 hover:bg-maroon-dark">
+                       About
+                   </a>
+                   <a href="#books-section" class="nav-link text-lg font-medium text-white transition duration-150 rounded-lg p-2 hover:bg-maroon-dark">
+                       Books
+                   </a>
+                   <a href="#offerings-section" class="nav-link text-lg font-medium text-white transition duration-150 rounded-lg p-2 hover:bg-maroon-dark">
+                       Other Offerings
+                   </a>
+                   <!-- Cart Link -->
+                   <a href="#shopping-cart-section" class="nav-link text-lg font-bold text-gold transition duration-150 rounded-lg p-2 hover:bg-maroon-dark">
+                       View Cart (<span id="cart-item-count">0</span>)
+                   </a>
+               </nav>
+           </div>
+       </div>
+   </header>
+
+
+   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+
+       <!-- 1. About Section (Landing Page Content) -->
+       <section id="about-section" class="mb-24 pt-4 border-b pb-12 border-gray-400">
+           <h1 class="text-5xl font-bold text-center mb-12 text-maroon">About</h1>
+          
+           <div class="grid md:grid-cols-2 gap-12">
+               <!-- Mission Statement -->
+               <div>
+                   <h2 class="text-3xl font-semibold mb-4 text-black">Mission Statement</h2>
+                   <p class="text-xl leading-relaxed text-gray-700">
+                       This website will be used to allow customers to search for books and order books online. A successful visit will now include being able to know if we have a book in-stock and ordering ahead of time causing less wait times and frustration.
+                   </p>
+               </div>
+
+
+               <!-- Contact Information -->
+               <div>
+                   <h2 class="text-3xl font-semibold mb-4 text-black">Contact</h2>
+                   <ul class="text-xl space-y-2 text-gray-700">
+                       <li><strong>Address:</strong> 123 Cardinal Way Muncie, IN 47305</li>
+                       <li><strong>Phone:</strong> (123) 456 - 7890</li>
+                       <li><strong>Email:</strong> cardinal.books@gmail.com</li>
+                   </ul>
+               </div>
+           </div>
+       </section>
+
+
+       <!-- 2. Books Section -->
+       <section id="books-section" class="mb-24 pt-4 border-b pb-12 border-gray-400">
+           <h1 class="text-5xl font-bold text-center mb-16 text-maroon">Books</h1>
+
+
+           <!-- Popular Books (Now a Carousel for all 8 books) -->
+           <h2 class="text-3xl font-semibold mb-6 text-black">Popular</h2>
+           <div class="relative">
+               <!-- Carousel Controls: Previous -->
+               <button onclick="navigatePopular('prev')" id="carousel-prev" class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300">
+                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-maroon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+               </button>
+
+
+               <!-- Carousel Window -->
+               <div id="popular-books-carousel" class="overflow-hidden mx-10">
+                   <!-- This inner div handles the translation for sliding -->
+                   <div id="popular-books-list" class="flex transition-transform duration-500 ease-in-out">
+                       <!-- Book cards will be dynamically rendered here by JavaScript -->
+                   </div>
+               </div>
+
+
+               <!-- Carousel Controls: Next -->
+               <button onclick="navigatePopular('next')" id="carousel-next" class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-3 bg-white rounded-full shadow-lg hover:bg-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300">
+                   <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-maroon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+               </button>
+           </div>
+
+
+           <!-- Categories - Links trigger filtering in the section below -->
+           <h2 class="text-3xl font-semibold mb-6 mt-12 text-black">Categories</h2>
+           <div id="category-links" class="flex flex-wrap space-x-4 mb-12 text-lg text-gray-600">
+               <!-- Category links rendered by JavaScript for filtering -->
+           </div>
+
+
+           <!-- All Books (Filtered List) -->
+           <h2 class="text-3xl font-semibold mb-6 text-black"><span id="current-category-title">All</span> Books</h2>
+           <div id="all-books-list" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-6">
+               <!-- Filtered book cards will be rendered here by JavaScript -->
+           </div>
+       </section>
+
+
+       <!-- 3. Additional Offerings Section (With fully functional cards) -->
+       <section id="offerings-section" class="mb-24 pt-4 border-b pb-12 border-gray-400">
+           <h1 class="text-5xl font-bold text-center mb-16 text-maroon">Additional Offerings</h1>
+
+
+           <!-- Bookmarks -->
+           <h2 class="text-3xl font-semibold mb-6 text-black">Bookmarks</h2>
+           <div class="grid grid-cols-2 sm:grid-cols-5 md:grid-cols-5 gap-6 mb-12">
+               <!-- Premium Bookmark -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offm')">
+                       <img src="https://placehold.co/600x900/6D28D9/ffffff?text=Design+Bookmark" alt="Premium Bookmark" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Premium Bookmark</p>
+                   </a>
+                   <button onclick="addItemToCart('offm')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($4.99)
+                   </button>
+               </div>
+               <!-- Tassel Bookmark -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offm_tassel')">
+                       <img src="https://placehold.co/600x900/FFD700/800000?text=Tassel+Bookmark" alt="Tassel Bookmark" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Tassel Bookmark</p>
+                   </a>
+                   <button onclick="addItemToCart('offm_tassel')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($4.99)
+                   </button>
+               </div>
+               <!-- Metal Bookmark -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offm_metal')">
+                       <img src="https://placehold.co/600x900/10B981/ffffff?text=Metal+Bookmark" alt="Metal Bookmark" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Metal Bookmark</p>
+                   </a>
+                   <button onclick="addItemToCart('offm_metal')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($5.99)
+                   </button>
+               </div>
+               <!-- Magnetic Bookmark -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offm_magnetic')">
+                       <img src="https://placehold.co/600x900/EF4444/ffffff?text=Magnetic+Bookmark" alt="Magnetic Bookmark" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Magnetic Bookmark</p>
+                   </a>
+                   <button onclick="addItemToCart('offm_magnetic')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($3.50)
+                   </button>
+               </div>
+               <!-- Surprise Bookmark (REPLACED Custom Bookmark) -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offm_surprise')">
+                       <img src="https://placehold.co/600x900/C084FC/ffffff?text=Surprise+Bookmark" alt="Surprise Bookmark" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Surprise Bookmark</p>
+                   </a>
+                   <button onclick="addItemToCart('offm_surprise')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($4.00)
+                   </button>
+               </div>
+           </div>
+
+
+           <!-- Lights -->
+           <h2 class="text-3xl font-semibold mb-6 mt-12 text-black">Lights</h2>
+           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 mb-12 max-w-2xl">
+               <!-- Book Light Clip-on -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offl')">
+                        <!-- Updated to use an image -->
+                       <img src="https://placehold.co/600x900/059669/ffffff?text=Clip-on+Light" alt="Book Light Clip-on" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Book Light Clip-on</p>
+                   </a>
+                   <button onclick="addItemToCart('offl')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($19.99)
+                   </button>
+               </div>
+               <!-- Neck Reading Light -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offl_neck')">
+                       <img src="https://placehold.co/600x900/3B82F6/ffffff?text=Neck+Reading+Light" alt="Neck Reading Light" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Neck Reading Light</p>
+                   </a>
+                   <button onclick="addItemToCart('offl_neck')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($24.99)
+                   </button>
+               </div>
+               <!-- Amber LED Light -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offl_amber')">
+                       <img src="https://placehold.co/600x900/FFD700/800000?text=Amber+LED+Light" alt="Amber LED Light" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Amber LED Light</p>
+                   </a>
+                   <button onclick="addItemToCart('offl_amber')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($14.99)
+                   </button>
+               </div>
+           </div>
+
+
+           <!-- Annotation Materials (Functional, with new images) -->
+           <h2 class="text-3xl font-semibold mb-6 mt-12 text-black">Annotation Materials</h2>
+           <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-6 max-w-4xl">
+               <!-- Offering Card 3 (Annotation) - Note Pad -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offa_np')">
+                       <img src="https://placehold.co/600x900/FACC15/000000?text=Note+Pad" alt="Note Pad" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Note Pad</p>
+                   </a>
+                   <button onclick="addItemToCart('offa_np')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($3.50)
+                   </button>
+               </div>
+              
+               <!-- Sticky Pads -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offa_sp')">
+                       <img src="https://placehold.co/600x900/F472B6/ffffff?text=Sticky+Pads" alt="Sticky Pads" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Sticky Pads</p>
+                   </a>
+                   <button onclick="addItemToCart('offa_sp')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($2.75)
+                   </button>
+               </div>
+
+
+               <!-- Pens -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offa_pen')">
+                       <img src="https://placehold.co/600x900/0F766E/ffffff?text=Pens" alt="Pens" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Pens</p>
+                   </a>
+                   <button onclick="addItemToCart('offa_pen')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($5.00)
+                   </button>
+               </div>
+              
+               <!-- Highlighters -->
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('offa_high')">
+                       <img src="https://placehold.co/600x900/A78BFA/ffffff?text=Highlighters" alt="Highlighters" class="w-full h-32 object-cover rounded-lg mb-2 border border-gray-200">
+                       <p class="font-medium text-lg">Highlighters</p>
+                   </a>
+                   <button onclick="addItemToCart('offa_high')" class="mt-4 bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-lg transition duration-150 text-sm shadow-md">
+                       Add to Cart ($4.50)
+                   </button>
+               </div>
+           </div>
+       </section>
+
+
+       <!-- 4. Last Page/Detail Section (Simulates a single item view) -->
+       <section id="last-page-section" class="pt-4 pb-20">
+           <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl border border-maroon">
+               <h1 class="text-5xl font-extrabold text-maroon mb-6">Item Detail View (Last Page)</h1>
+               <p class="text-xl text-gray-700 mb-12">
+                   This page dynamically updates to show the last book or offering you clicked.
+               </p>
+
+
+               <!-- Dynamic Product Detail Layout -->
+               <div class="md:flex md:space-x-12">
+                   <!-- Book Cover / Item Placeholder -->
+                   <div class="flex-shrink-0 w-full md:w-1/3 h-80 rounded-lg mb-6 md:mb-0 flex items-center justify-center text-xl font-semibold text-gray-700 shadow-inner overflow-hidden">
+                       <img id="detail-cover" src="https://placehold.co/600x900/DC2626/ffffff?text=Fourth+Wing" alt="Detail Item Cover" class="w-full h-full object-cover">
+                   </div>
+
+
+                   <!-- Details -->
+                   <div class="md:w-2/3 space-y-4">
+                       <h2 id="detail-title" class="text-4xl font-bold text-black">Fourth Wing</h2>
+                       <p id="detail-author" class="text-2xl italic text-maroon">By Rebecca Yarros</p>
+                       <p id="detail-price" class="text-3xl font-extrabold text-gold">$28.00</p>
+                       <p id="detail-description" class="text-lg leading-relaxed text-gray-700 mt-6">
+                           Experience the gripping world of the Fourth Wing! Use the button below to add this featured item to your shopping cart.
+                       </p>
+                       <!-- Button now calls the JS function to add the currently viewed item to the cart -->
+                       <button id="detail-add-button" onclick="addItemToCart(currentItemId)" class="mt-8 bg-maroon hover:bg-maroon-dark text-white font-bold py-3 px-8 rounded-xl transition duration-300 shadow-lg hover:shadow-xl">
+                           Add to Cart
+                       </button>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+
+       <!-- 5. Shopping Cart Section (New) -->
+       <section id="shopping-cart-section" class="pt-4 pb-20 mt-16">
+           <h1 class="text-5xl font-bold text-center mb-12 text-maroon">Your Shopping Cart</h1>
+           <div class="bg-white p-8 sm:p-12 rounded-2xl shadow-xl border border-gray-400">
+               <div id="cart-items" class="min-h-16 mb-8 border-b pb-4 border-gray-300">
+                   <!-- Cart items will be rendered here by JavaScript -->
+                   <p class="text-center text-gray-500 italic">Your cart is empty. Add a book or offering to see the totals!</p>
+               </div>
+
+
+               <div class="max-w-md ml-auto space-y-3 text-lg">
+                   <div class="flex justify-between">
+                       <span class="font-medium text-gray-700">Subtotal:</span>
+                       <span id="subtotal" class="font-bold text-black">$0.00</span>
+                   </div>
+                   <div class="flex justify-between border-t pt-2 border-gray-300">
+                       <span class="font-medium text-gray-700">Sales Tax (7.0%):</span>
+                       <span id="tax" class="font-bold text-black">$0.00</span>
+                   </div>
+                   <div class="flex justify-between border-t-2 pt-4 text-2xl font-extrabold text-maroon border-gray-400">
+                       <span>Total:</span>
+                       <span id="total">$0.00</span>
+                   </div>
+               </div>
+           </div>
+       </section>
+
+
+       <div class="text-center mt-12">
+           <a href="#" class="text-lg text-maroon hover:text-black font-semibold transition duration-150">
+               &#8593; Back to Top
+           </a>
+       </div>
+   </main>
+
+
+   <!-- Footer -->
+   <footer class="bg-black text-white py-6 mt-16">
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+           <p>&copy; 2024 Cardinal Books. All rights reserved.</p>
+       </div>
+   </footer>
+
+
+   <!-- JavaScript for Cart and Detail Logic -->
+   <script>
+       // --- INVENTORY DATA ---
+       const INVENTORY = [
+           // Books
+           {
+               id: 'b_agggm',
+               name: 'A Good Girl\'s Guide to Murder',
+               price: 14.50,
+               author: 'Holly Jackson',
+               genre: 'Young Adult Mystery',
+               cover: 'https://placehold.co/600x900/667EEA/ffffff?text=Murder+Mystery',
+               categories: ['YA', 'Fiction'],
+               blurb: 'Five years ago, a student named Sal Singh was convicted of murdering his girlfriend, Andie Bell. But high schooler Pippa Fitz-Amobi believes the real killer is still out there. She decides to re-investigate the closed case for her senior project, uncovering dark secrets that someone in town desperately wants to keep buried. This gripping mystery will keep you guessing until the final page.'
+           },
+           {
+               id: 'b_fw',
+               name: 'Fourth Wing',
+               price: 28.00,
+               author: 'Rebecca Yarros',
+               genre: 'Fantasy',
+               cover: 'https://placehold.co/600x900/DC2626/ffffff?text=Dragon+Fantasy',
+               categories: ['Fantasy', 'Fiction'],
+               blurb: 'Violet Sorrengail was supposed to live a quiet life among books, but her mother, the commanding general, forces her to join the dragon riders. With more candidates than dragons and dangerous rivals who would kill to eliminate the competition, Violet must fight to survive in a war college where graduation means riding a dragon—or dying trying.'
+           },
+           {
+               id: 'b_tlh',
+               name: 'The Love Hypothesis',
+               price: 16.00,
+               author: 'Ali Hazelwood',
+               genre: 'Romantic Comedy',
+               cover: 'https://placehold.co/600x900/EC4899/ffffff?text=Romance',
+               categories: ['Romance', 'Fiction'],
+               blurb: 'As a third-year Ph.D. candidate, Olive Smith doesn\'t believe in lasting romantic relationships, but her best friend does. To prove she\'s moving on, Olive impulsively kisses the first man she sees—who turns out to be Adam Carlsen, a notoriously cold professor. When Adam agrees to fake-date her, their scientific experiment begins to feel dangerously close to genuine romance.'
+           },
+           {
+               id: 'b_igmmd',
+               name: 'I\'m Glad My Mom Died',
+               price: 17.99,
+               author: 'Jennette McCurdy',
+               genre: 'Memoir',
+               cover: 'https://placehold.co/600x900/1F2937/ffffff?text=Memoir',
+               categories: ['Nonfiction'],
+               blurb: 'Jennette McCurdy shares her painful but honest story of growing up as a child actor under the control of her ambitious and emotionally demanding mother. This memoir tackles complex family relationships, self-discovery, and finding peace after facing intense pressures in the spotlight.'
+           },
+           {
+               id: 'b_hiwtba',
+               name: 'Home is Where the Bodies are',
+               price: 13.99,
+               author: 'Jeneva Rose',
+               genre: 'Thriller',
+               cover: 'https://placehold.co/600x900/F59E0B/1F2937?text=Thriller',
+               categories: ['Fiction', 'Horror'],
+               blurb: 'When three estranged sisters return to their childhood home for a wedding, the past comes back to haunt them—literally. A sinister family secret is exposed, leading to a chilling sequence of events. Read this thrilling tale of deceit and dark history.'
+           },
+           {
+               id: 'b_all',
+               name: 'A Little Life',
+               price: 18.50,
+               author: 'Hanya Yanagihara',
+               genre: 'Literary Fiction',
+               cover: 'https://placehold.co/600x900/65A30D/ffffff?text=Literary+Fiction',
+               categories: ['Fiction'],
+               blurb: 'Follows the lives of four college classmates—Jude, Willem, JB, and Malcolm—in New York City as they struggle with their careers, relationships, and the haunting, mysterious past of the reserved and brilliant Jude. This is a deep, emotional story about friendship and enduring hardship.'
+           },
+           {
+               id: 'b_mah',
+               name: 'Milk and Honey',
+               price: 11.00,
+               author: 'Rupi Kaur',
+               genre: 'Poetry',
+               cover: 'https://placehold.co/600x900/FCA5A5/1F2937?text=Poetry+Collection',
+               categories: ['Poetry', 'Fiction'],
+               blurb: 'A collection of poetry and prose about survival, femininity, abuse, love, and loss. Divided into four chapters, each dealing with a different pain and healing process, this book speaks directly and honestly about universal experiences.'
+           },
+           {
+               id: 'b_wwg',
+               name: 'Witchcraft for Wayward Girls',
+               price: 15.99,
+               author: 'Emily Bain Murphy',
+               genre: 'Young Adult Fantasy',
+               cover: 'https://placehold.co/600x900/9333EA/ffffff?text=Witch+YA+Fantasy',
+               categories: ['YA', 'Fantasy'],
+               blurb: 'In a world where magic is strictly controlled, two sisters discover a hidden legacy of witchcraft tied to a mysterious boarding school. They must unravel their family\'s secrets and learn to harness their powers before a dangerous organization silences them forever.'
+           },
+
+
+           // Additional Offerings - UPDATED for Surprise Bookmark
+           {
+               id: 'offm',
+               name: 'Premium Bookmark',
+               price: 4.99,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/6D28D9/ffffff?text=Design+Bookmark',
+               blurb: 'Marks your page without damaging the spine. Made from durable, high-quality materials to last through many reads. Simply place it between the pages and close the book.'
+           },
+           {
+               id: 'offm_tassel',
+               name: 'Tassel Bookmark',
+               price: 4.99,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/FFD700/800000?text=Tassel+Bookmark',
+               blurb: 'A classic silk tassel bookmark that hangs elegantly outside your book, making it easy to spot your page. Slip the ribbon over the spine and let the tassel hang free.'
+           },
+           {
+               id: 'offm_metal',
+               name: 'Metal Bookmark',
+               price: 5.99,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/10B981/ffffff?text=Metal+Bookmark',
+               blurb: 'A thin, durable metal bookmark that won\'t crease or tear pages. Slips easily between pages for reliable marking and stylish reading.'
+           },
+           {
+               id: 'offm_magnetic',
+               name: 'Magnetic Bookmark',
+               price: 3.50,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/EF4444/ffffff?text=Magnetic+Bookmark',
+               blurb: 'Folds over the corner of the page and uses small magnets to securely hold its spot. It prevents slippage and is great for marking a specific spot.'
+           },
+           {
+               id: 'offm_surprise', // Updated ID
+               name: 'Surprise Bookmark', // Updated Name
+               price: 4.00,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/C084FC/ffffff?text=Surprise+Bookmark', // Updated Image Text
+               blurb: 'Take a chance and add a little mystery to your reading! This bookmark comes in a random, fun design not available anywhere else. It’s always a delightful surprise!' // Updated Blurb
+           },
+           {
+               id: 'offl',
+               name: 'Book Light Clip-on',
+               price: 19.99,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/059669/ffffff?text=Clip-on+Light',
+               blurb: 'Clips directly onto your book cover or stand, providing a bright, focused LED light to illuminate your pages without disturbing others. Great for late-night reading.'
+           },
+           {
+               id: 'offl_neck',
+               name: 'Neck Reading Light',
+               price: 24.99,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/3B82F6/ffffff?text=Neck+Reading+Light',
+               blurb: 'Worn around the neck, this light provides hands-free, adjustable illumination focused entirely on your book pages. Perfect for crafting or reading in bed.'
+           },
+           {
+               id: 'offl_amber',
+               name: 'Amber LED Light',
+               price: 14.99,
+               author: 'N/A',
+               genre: 'Accessory',
+               cover: 'https://placehold.co/600x900/FFD700/800000?text=Amber+LED+Light',
+               blurb: 'Emits a warm, amber-colored light that reduces blue light exposure, making it ideal for reading before bedtime and protecting your eyes.'
+           },
+           {
+               id: 'offa_np',
+               name: 'Note Pad',
+               price: 3.50,
+               author: 'N/A',
+               genre: 'Annotation',
+               cover: 'https://placehold.co/600x900/FACC15/000000?text=Note+Pad',
+               blurb: 'Use these standard note pads for jotting down reading reflections, favorite quotes, or plotting out your next chapter summary. Includes 100 perforated pages.'
+           },
+           {
+               id: 'offa_sp',
+               name: 'Sticky Pads',
+               price: 2.75,
+               author: 'N/A',
+               genre: 'Annotation',
+               cover: 'https://placehold.co/600x900/F472B6/ffffff?text=Sticky+Pads',
+               blurb: 'These small, repositionable sticky pads are perfect for marking specific lines or sections in a book without damaging the pages. Comes in assorted bright colors.'
+           },
+           {
+               id: 'offa_pen',
+               name: 'Pens (Set of 5)',
+               price: 5.00,
+               author: 'N/A',
+               genre: 'Annotation',
+               cover: 'https://placehold.co/600x900/0F766E/ffffff?text=Pens',
+               blurb: 'A set of smooth-writing gel pens perfect for non-bleed annotation in your journal or note pad. Features fine tips for detailed writing.'
+           },
+           {
+               id: 'offa_high',
+               name: 'Highlighters (Set of 4)',
+               price: 4.50,
+               author: 'N/A',
+               genre: 'Annotation',
+               cover: 'https://placehold.co/600x900/A78BFA/ffffff?text=Highlighters',
+               blurb: 'Bright, chisel-tip highlighters in four colors to help you color-code and track important information while reading. The ink is smear-resistant.'
+           },
+
+
+       ];
+
+
+       const SALES_TAX_RATE = 0.07; // 7%
+
+
+       // Global State
+       let cart = [];
+       let currentItemId = 'b_fw';
+       let popularCurrentPage = 0;
+       const popularBooksPerPage = 4;
+       let currentFilter = 'All';
+       const booksOnly = INVENTORY.filter(item => item.author !== 'N/A');
+
+
+       /**
+        * Finds item details by ID.
+        */
+       function findItemById(itemId) {
+           return INVENTORY.find(i => i.id === itemId);
+       }
+
+
+       /**
+        * Updates the global currentItemId and re-renders the detail section.
+        */
+       function setCurrentItem(itemId) {
+           currentItemId = itemId;
+           renderDetailView(findItemById(itemId));
+       }
+
+
+       // --- CAROUSEL LOGIC ---
+
+
+       /**
+        * Renders the books in the popular carousel based on the current page.
+        */
+       function renderPopularBooks() {
+           const carouselList = document.getElementById('popular-books-list');
+           const numBooks = booksOnly.length;
+           const totalPages = Math.ceil(numBooks / popularBooksPerPage);
+
+
+           // Calculate offset percentage (8 books total, 4 per page. Page 0 = 0%, Page 1 = 50%)
+           const offset = popularCurrentPage * (100 / totalPages) * -1;
+           carouselList.style.transform = `translateX(${offset}%)`;
+
+
+           // Update button disabled state
+           document.getElementById('carousel-prev').disabled = popularCurrentPage === 0;
+           document.getElementById('carousel-next').disabled = popularCurrentPage >= totalPages - 1;
+
+
+           // Generate all book cards (Tailwind w-1/4 and flex-shrink-0 manages the visual layout)
+           carouselList.innerHTML = booksOnly.map(book => `
+               <div class="w-1/4 flex-shrink-0 p-3">
+                   <div class="bg-white rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between h-full">
+                       <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('${book.id}')">
+                           <img src="${book.cover}" alt="${book.name} Cover" onerror="this.onerror=null;this.src='https://placehold.co/200x300/CCCCCC/666666?text=Cover';" class="w-full h-48 object-cover rounded-t-xl mb-2">
+                           <p class="font-medium text-lg pt-2 px-2">${book.name}</p>
+                           <p class="text-sm text-gray-500 pb-2">${book.author}</p>
+                       </a>
+                       <button onclick="addItemToCart('${book.id}')" class="mt-auto bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-b-xl transition duration-150 text-sm shadow-md">
+                           Add to Cart (${formatCurrency(book.price)})
+                       </button>
+                   </div>
+               </div>
+           `).join('');
+       }
+
+
+       /**
+        * Navigates the popular books carousel.
+        */
+       function navigatePopular(direction) {
+           const numBooks = booksOnly.length;
+           const totalPages = Math.ceil(numBooks / popularBooksPerPage);
+
+
+           if (direction === 'next' && popularCurrentPage < totalPages - 1) {
+               popularCurrentPage++;
+           } else if (direction === 'prev' && popularCurrentPage > 0) {
+               popularCurrentPage--;
+           }
+           renderPopularBooks();
+       }
+
+
+       // --- FILTERING LOGIC ---
+
+
+       /**
+        * Renders the clickable category links.
+        */
+       function renderCategoryLinks() {
+           // Collects all unique categories from the books
+           const categories = booksOnly
+               .flatMap(item => item.categories)
+               .filter((value, index, self) => self.indexOf(value) === index)
+               .sort();
+          
+           const categoryLinksEl = document.getElementById('category-links');
+          
+           // Start with 'All' link
+           let html = `<a href="#books-section" onclick="handleCategoryClick('All', event)" class="category-link ${currentFilter === 'All' ? 'font-bold text-maroon' : 'text-gray-700'} hover:text-black transition duration-150 cursor-pointer">All</a>`;
+
+
+           // Add other categories
+           html += categories.map(cat => `
+               <a href="#books-section" onclick="handleCategoryClick('${cat}', event)" class="category-link ${currentFilter === cat ? 'font-bold text-maroon' : 'text-gray-700'} hover:text-black transition duration-150 cursor-pointer">
+                   ${cat}
+               </a>
+           `).join('');
+
+
+           categoryLinksEl.innerHTML = html;
+       }
+
+
+       /**
+        * Handles category link clicks, updates the filter, and re-renders the book list.
+        */
+       function handleCategoryClick(category, event) {
+           // Prevent default anchor link jump to keep the page smooth
+           if (event) event.preventDefault();
+          
+           currentFilter = category;
+          
+           // Re-render links to apply active styling
+           renderCategoryLinks();
+          
+           // Re-render books in the All section
+           renderAllBooks(category);
+          
+           // Scroll to the book list section for better UX
+           document.getElementById('books-section').scrollIntoView();
+       }
+
+
+       /**
+        * Renders the "All Books" list based on the current category filter.
+        */
+       function renderAllBooks(filter) {
+           const booksListEl = document.getElementById('all-books-list');
+           const titleEl = document.getElementById('current-category-title');
+          
+           // Filter books based on category
+           const filteredBooks = filter === 'All'
+               ? booksOnly
+               : booksOnly.filter(book => book.categories.includes(filter));
+
+
+           booksListEl.innerHTML = '';
+           titleEl.textContent = filter; // Update section title
+
+
+           if (filteredBooks.length === 0) {
+                booksListEl.innerHTML = '<p class="col-span-4 text-center text-gray-500 italic py-10">No books found in the ' + filter + ' category.</p>';
+                return;
+           }
+
+
+           // Generate HTML for filtered books
+           const html = filteredBooks.map(book => `
+               <div class="bg-white p-4 rounded-xl shadow-md border border-gray-300 text-center flex flex-col justify-between">
+                   <a href="#last-page-section" class="card-link no-hover-effect flex-grow" onclick="setCurrentItem('${book.id}')">
+                       <img src="${book.cover}" alt="${book.name} Cover" onerror="this.onerror=null;this.src='https://placehold.co/200x300/CCCCCC/666666?text=Cover';" class="w-full h-48 object-cover rounded-t-xl mb-2">
+                       <p class="font-medium text-lg pt-2 px-2">${book.name}</p>
+                       <p class="text-sm text-gray-500 pb-2">${book.author}</p>
+                   </a>
+                   <button onclick="addItemToCart('${book.id}')" class="mt-auto bg-maroon hover:bg-maroon-dark text-white font-medium py-2 px-4 rounded-b-xl transition duration-150 text-sm shadow-md">
+                       Add to Cart (${formatCurrency(book.price)})
+                   </button>
+               </div>
+           `).join('');
+
+
+           booksListEl.innerHTML = html;
+       }
+
+
+       // --- CART/DETAIL LOGIC (Existing) ---
+
+
+       /**
+        * Populates the Item Detail View with the clicked item's data.
+        */
+       function renderDetailView(item) {
+           if (!item) return;
+
+
+           document.getElementById('detail-title').textContent = item.name;
+          
+           // For books, show "By Author"; for offerings, show the item genre/category
+           const authorText = item.author !== 'N/A' ? `By ${item.author}` : item.genre;
+           document.getElementById('detail-author').textContent = authorText;
+          
+           document.getElementById('detail-price').textContent = formatCurrency(item.price);
+          
+           // Use the specific blurb (which contains the "how it works" for offerings)
+           const description = item.blurb;
+          
+           document.getElementById('detail-description').textContent = description;
+          
+           document.getElementById('detail-cover').src = item.cover;
+           document.getElementById('detail-cover').alt = item.name + " Cover";
+          
+           document.getElementById('detail-add-button').setAttribute('onclick', `addItemToCart('${item.id}')`);
+       }
+
+
+       /**
+        * Formats a number as currency (USD).
+        */
+       function formatCurrency(amount) {
+           return `$${amount.toFixed(2)}`;
+       }
+
+
+       /**
+        * Calculates subtotal, tax, and total based on the current cart contents.
+        */
+       function calculateTotals() {
+           let subtotal = 0;
+          
+           cart.forEach(itemId => {
+               const item = findItemById(itemId);
+               if (item) {
+                   subtotal += item.price;
+               }
+           });
+
+
+           const tax = subtotal * SALES_TAX_RATE;
+           const total = subtotal + tax;
+
+
+           return { subtotal, tax, total };
+       }
+
+
+       /**
+        * Updates the HTML elements to display the current cart contents and totals.
+        */
+       function renderCart() {
+           const cartItemsEl = document.getElementById('cart-items');
+           const cartCountEl = document.getElementById('cart-item-count');
+          
+           cartCountEl.textContent = cart.length;
+
+
+           const itemCounts = cart.reduce((acc, itemId) => {
+               acc[itemId] = (acc[itemId] || 0) + 1;
+               return acc;
+           }, {});
+
+
+           cartItemsEl.innerHTML = '';
+
+
+           if (cart.length === 0) {
+               cartItemsEl.innerHTML = '<p class="text-center text-gray-500 italic">Your cart is empty. Add a book or offering to see the totals!</p>';
+           } else {
+               Object.keys(itemCounts).forEach(itemId => {
+                   const item = findItemById(itemId);
+                   const count = itemCounts[itemId];
+                   if (item) {
+                       const itemTotal = item.price * count;
+                       const itemDiv = document.createElement('div');
+                       itemDiv.className = 'flex justify-between py-2 border-b border-gray-300 last:border-b-0';
+                       itemDiv.innerHTML = `
+                           <span class="text-black">${count} x ${item.name}</span>
+                           <span class="font-medium text-black">${formatCurrency(itemTotal)}</span>
+                       `;
+                       cartItemsEl.appendChild(itemDiv);
+                   }
+               });
+           }
+
+
+           const { subtotal, tax, total } = calculateTotals();
+           document.getElementById('subtotal').textContent = formatCurrency(subtotal);
+           document.getElementById('tax').textContent = formatCurrency(tax);
+           document.getElementById('total').textContent = formatCurrency(total);
+       }
+
+
+       /**
+        * Adds an item to the cart and re-renders the cart display.
+        */
+       function addItemToCart(itemId) {
+           const item = findItemById(itemId);
+           if (item) {
+               cart.push(itemId);
+               renderCart();
+               console.log(`${item.name} added to cart! Current items: ${cart.length}`);
+               document.getElementById('shopping-cart-section').scrollIntoView();
+           } else {
+               console.error(`Item with ID ${itemId} not found in inventory.`);
+           }
+       }
+
+
+       // Initialize all components when the page loads
+       document.addEventListener('DOMContentLoaded', () => {
+           renderCart();
+           // Default to 'b_fw' on load, but make sure to use the specific item data
+           renderDetailView(findItemById(currentItemId));
+           renderPopularBooks();
+           renderCategoryLinks();
+           renderAllBooks(currentFilter); // Initial render of all books
+       });
+   </script>
+
+
+</body>
+</html>
+
